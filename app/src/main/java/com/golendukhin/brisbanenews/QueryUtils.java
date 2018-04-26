@@ -2,11 +2,9 @@ package com.golendukhin.brisbanenews;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +25,6 @@ final class QueryUtils {
 
     public static List<New> fetchNews(String requestUrl) {
         URL url = createUrl(requestUrl);
-
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
         try {
@@ -118,7 +115,6 @@ final class QueryUtils {
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
-
         // Create an empty ArrayList that we can start adding earthquakes to
         List<New> news = new ArrayList<>();
 
@@ -128,10 +124,11 @@ final class QueryUtils {
         try {
             // Create a JSONObject from the JSON response string
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
+            JSONObject responseJSONObject = baseJsonResponse.getJSONObject("response");
 
             // Extract the JSONArray associated with the key called "results",
             // which represents a list of features (or news).
-            JSONArray newsArray = baseJsonResponse.getJSONArray("results");
+            JSONArray newsArray = responseJSONObject.getJSONArray("results");
 
             for (int i = 0; i < newsArray.length(); i++) {
                 JSONObject currentNew = newsArray.getJSONObject(i);
@@ -140,9 +137,13 @@ final class QueryUtils {
                 webPublicationDate = webPublicationDate.split("T")[0];
 
                 String webTitle = currentNew.getString("webTitle");
-                String apiUrl = currentNew.getString("apiUrl");
+                String apiUrl = currentNew.getString("webUrl");
 
-                news.add(new New(webPublicationDate, webTitle, apiUrl));
+                JSONArray tagArray = currentNew.getJSONArray("tags");
+                JSONObject tagJSONObject = tagArray.getJSONObject(0);
+                String author = tagJSONObject.getString("webTitle");
+
+                news.add(new New(webPublicationDate, webTitle, apiUrl, author));
             }
 
         } catch (JSONException e) {

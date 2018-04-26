@@ -7,7 +7,7 @@ import java.util.List;
 class NewsLoader extends AsyncTaskLoader<List<New>> {
     private String url;
 
-    public NewsLoader(Context context, String url) {
+    NewsLoader(Context context, String url) {
         super(context);
         this.url = url;
     }
@@ -22,9 +22,6 @@ class NewsLoader extends AsyncTaskLoader<List<New>> {
         if (url == null) {
             return null;
         }
-
-        // Perform the network request, parse the response, and extract a list of earthquakes.
-        List <New> news = QueryUtils.fetchNews(url);
-        return news;
+        return QueryUtils.fetchNews(url);
     }
 }

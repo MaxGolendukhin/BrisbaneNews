@@ -4,22 +4,28 @@ class New {
     private String webPublicationDate;
     private String webTitle;
     private String apiUrl;
+    private String author;
 
-    New(String webPublicationDate, String webTitle, String apiUrl) {
+    New(String webPublicationDate, String webTitle, String apiUrl, String author) {
         this.webPublicationDate = webPublicationDate;
         this.webTitle = webTitle;
         this.apiUrl = apiUrl;
+        this.author = author;
     }
 
-    public String getWebPublicationDate() {
+    String getWebPublicationDate() {
         return webPublicationDate;
     }
 
-    public String getWebTitle() {
+    String getWebTitle() {
         return webTitle;
     }
 
-    public String getApiUrl() {
+    String getApiUrl() {
         return apiUrl;
+    }
+
+    String getAuthor() {
+        return author;
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_standard"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginBottom="@dimen/margin_interval"
+        android:textColor="@android:color/black"
+        tools:text="Queensland poised to pass tougher land-clearing laws as early as next week"/>
+
+    <TextView
+        android:id="@+id/author_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Ben Smee"
+        android:layout_below="@+id/title_text_view"
+        android:layout_alignParentStart="true"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="20.01.2018"
+        android:layout_below="@+id/title_text_view"
+        android:layout_alignParentEnd="true"
+        android:textSize="14sp"/>
+
+
+</RelativeLayout>
