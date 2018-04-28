@@ -18,6 +18,10 @@ class ListViewAdapter extends ArrayAdapter<New> {
         this.news = news;
     }
 
+    /**
+     * @param position used to fetch data from news list
+     * @return rows to populate list view
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;

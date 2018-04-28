@@ -17,6 +17,10 @@ class NewsLoader extends AsyncTaskLoader<List<New>> {
         forceLoad();
     }
 
+    /**
+     * Loads data in async task mode
+     * @return list of news parsed from JSON fetched from Guardian
+     */
     @Override
     public List<New> loadInBackground() {
         if (url == null) {

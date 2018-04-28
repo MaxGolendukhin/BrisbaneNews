@@ -23,6 +23,14 @@ final class QueryUtils {
     private QueryUtils() {
     }
 
+    /**
+     * Main method of QueryUtils class
+     * Creates url
+     * Makes http request in order to get JSON response
+     * Extracts list from previously fetched JSON response
+     * @param requestUrl defined url string to fetch from Guardian
+     * @return List of news to populate adapter
+     */
     public static List<New> fetchNews(String requestUrl) {
         URL url = createUrl(requestUrl);
         // Perform HTTP request to the URL and receive a JSON response back
@@ -110,6 +118,11 @@ final class QueryUtils {
         return output.toString();
     }
 
+    /**
+     * Parses JSON into string to create new object
+     * @param newsJSON being parsed
+     * @return List<New> containing all information to populate adapter
+     */
     private static List<New> extractFeatureFromJson(String newsJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {

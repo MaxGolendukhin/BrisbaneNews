@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String GUARDIAN_REQUEST_URL =
             "http://content.guardianapis.com/search?order-by=newest&" +
                     "show-tags=contributor&from-date=2018-01-01&use-date=published&page-size=30&" +
-                    "q=Brisbane&api-key=3a64c26a-9ce1-402a-8472-7d0a7d749b3c";
+                    "q=Brisbane&api-key=test";
     private static final int NEW_LOADER_ID = 0;
 
     private TextView emptyStateTextView;
@@ -77,12 +77,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    /**
+     * LoaderManager interface method
+     * @return new loader to fetch data
+     */
     @Override
     public Loader<List<New>> onCreateLoader(int i, Bundle bundle) {
-        // Create a new loader for the given URL
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);
     }
 
+    /**
+     * LoaderManager interface method
+     * Triggered when loader has finished its job.
+     * Load indicator is to be no more visible from this moment
+     */
     @Override
     public void onLoadFinished(Loader<List<New>> loader, List<New> news) {
         loadingIndicator.setVisibility(View.GONE);
@@ -96,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    /**
+     * LoaderManager interface method
+     * Triggered when need to reset loader
+     */
     @Override
     public void onLoaderReset(Loader<List<New>> loader) {
         // Loader reset, so we can clear out our existing data.
