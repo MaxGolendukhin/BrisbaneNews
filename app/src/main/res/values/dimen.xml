@@ -2,4 +2,6 @@
 <resources>
     <dimen name="margin_standard">20dp</dimen>
     <dimen name="margin_interval">16dp</dimen>
+    <dimen name="title_text_size">18sp</dimen>
+    <dimen name="regular_text_size">14sp</dimen>
 </resources>
