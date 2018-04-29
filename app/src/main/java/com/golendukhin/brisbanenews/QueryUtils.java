@@ -2,9 +2,11 @@ package com.golendukhin.brisbanenews;
 
 import android.text.TextUtils;
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,10 +19,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class QueryUtils {
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
+    private static final String response = "response";
+    private static final String results = "results";
+    private static final String date = "webPublicationDate";
+    private static final String dateSplitter = "T";
+    private static final String title = "webTitle";
+    private static final String url = "webUrl";
+    private static final String tags = "tags";
+    private static final String name = "sectionName";
+
     private QueryUtils() {
+        throw new AssertionError(R.string.util_exception_instantiation);
     }
 
     /**
@@ -28,10 +42,11 @@ final class QueryUtils {
      * Creates url
      * Makes http request in order to get JSON response
      * Extracts list from previously fetched JSON response
+     *
      * @param requestUrl defined url string to fetch from Guardian
      * @return List of news to populate adapter
      */
-    public static List<New> fetchNews(String requestUrl) {
+    public static List<BrisbaneNew> fetchBrisbaneNews(String requestUrl) {
         URL url = createUrl(requestUrl);
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
@@ -120,16 +135,17 @@ final class QueryUtils {
 
     /**
      * Parses JSON into string to create new object
+     *
      * @param newsJSON being parsed
-     * @return List<New> containing all information to populate adapter
+     * @return List<BrisbaneNew> containing all information to populate adapter
      */
-    private static List<New> extractFeatureFromJson(String newsJSON) {
+    private static List<BrisbaneNew> extractFeatureFromJson(String newsJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
         // Create an empty ArrayList that we can start adding earthquakes to
-        List<New> news = new ArrayList<>();
+        List<BrisbaneNew> brisbaneNews = new ArrayList<>();
 
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -137,34 +153,35 @@ final class QueryUtils {
         try {
             // Create a JSONObject from the JSON response string
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
-            JSONObject responseJSONObject = baseJsonResponse.getJSONObject("response");
+            JSONObject responseJSONObject = baseJsonResponse.getJSONObject(response);
 
             // Extract the JSONArray associated with the key called "results",
-            // which represents a list of features (or news).
-            JSONArray newsArray = responseJSONObject.getJSONArray("results");
+            // which represents a list of features (or brisbaneNews).
+            JSONArray newsArray = responseJSONObject.getJSONArray(results);
 
             for (int i = 0; i < newsArray.length(); i++) {
                 JSONObject currentNew = newsArray.getJSONObject(i);
 
-                String webPublicationDate = currentNew.getString("webPublicationDate");
-                webPublicationDate = webPublicationDate.split("T")[0];
+                String webPublicationDate = currentNew.getString(date);
+                webPublicationDate = webPublicationDate.split(dateSplitter)[0];
 
-                String webTitle = currentNew.getString("webTitle");
-                String apiUrl = currentNew.getString("webUrl");
+                String webTitle = currentNew.getString(title);
+                String apiUrl = currentNew.getString(url);
+                String sectionName = currentNew.getString(name);
 
-                JSONArray tagArray = currentNew.getJSONArray("tags");
+                JSONArray tagArray = currentNew.getJSONArray(tags);
                 JSONObject tagJSONObject = tagArray.getJSONObject(0);
-                String author = tagJSONObject.getString("webTitle");
+                String author = tagJSONObject.getString(title);
 
-                news.add(new New(webPublicationDate, webTitle, apiUrl, author));
+                brisbaneNews.add(new BrisbaneNew(webPublicationDate, webTitle, apiUrl, author, sectionName));
             }
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
             // with the message from the exception.
-            Log.e("QueryUtils", "Problem parsing the news JSON results", e);
+            Log.e("QueryUtils", "Problem parsing the brisbaneNews JSON results", e);
         }
-        return news;
+        return brisbaneNews;
     }
 }

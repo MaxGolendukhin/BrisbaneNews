@@ -7,16 +7,17 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<New>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<BrisbaneNew>> {
     private static final String GUARDIAN_REQUEST_URL =
             "http://content.guardianapis.com/search?order-by=newest&" +
                     "show-tags=contributor&from-date=2018-01-01&use-date=published&page-size=30&" +
@@ -32,18 +33,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
 
-        ListView listView = findViewById(R.id.list_view);
-        listViewAdapter = new ListViewAdapter(this, new ArrayList<New>());
-        listView.setAdapter(listViewAdapter);
+        ListView newsListView = findViewById(R.id.news_list_view);
+        listViewAdapter = new ListViewAdapter(this, new ArrayList<BrisbaneNew>());
+        newsListView.setAdapter(listViewAdapter);
 
         loadingIndicator = findViewById(R.id.loading_indicator);
         emptyStateTextView = findViewById(R.id.empty_view);
-        listView.setEmptyView(emptyStateTextView);
+        newsListView.setEmptyView(emptyStateTextView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                New mNew = listViewAdapter.getItem(position);
+                BrisbaneNew mNew = listViewAdapter.getItem(position);
                 String url = mNew.getApiUrl();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
@@ -79,10 +80,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     /**
      * LoaderManager interface method
+     *
      * @return new loader to fetch data
      */
     @Override
-    public Loader<List<New>> onCreateLoader(int i, Bundle bundle) {
+    public Loader<List<BrisbaneNew>> onCreateLoader(int i, Bundle bundle) {
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);
     }
 
@@ -92,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * Load indicator is to be no more visible from this moment
      */
     @Override
-    public void onLoadFinished(Loader<List<New>> loader, List<New> news) {
+    public void onLoadFinished(Loader<List<BrisbaneNew>> loader, List<BrisbaneNew> brisbaneNews) {
         loadingIndicator.setVisibility(View.GONE);
 
         // Clear the adapter of previous earthquake data
         listViewAdapter.clear();
-        if (news != null && !news.isEmpty()) {
-            listViewAdapter.addAll(news);
+        if (brisbaneNews != null && !brisbaneNews.isEmpty()) {
+            listViewAdapter.addAll(brisbaneNews);
         } else {
             emptyStateTextView.setText(R.string.no_news_found);
         }
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * Triggered when need to reset loader
      */
     @Override
-    public void onLoaderReset(Loader<List<New>> loader) {
+    public void onLoaderReset(Loader<List<BrisbaneNew>> loader) {
         // Loader reset, so we can clear out our existing data.
         listViewAdapter.clear();
     }

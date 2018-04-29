@@ -3,4 +3,5 @@
     <string name="no_internet_connection">No internet connection.</string>
     <string name="no_news_found">There are no news about Brisbane</string>
     <string name="author">Author:\ </string>
+    <string name="util_exception_instantiation">Utils class can not be instantiated</string>
 </resources>

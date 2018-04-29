@@ -6,39 +6,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import java.util.List;
 
-class ListViewAdapter extends ArrayAdapter<New> {
+class ListViewAdapter extends ArrayAdapter<BrisbaneNew> {
     private Context context;
-    private List<New> news;
+    private List<BrisbaneNew> brisbaneNews;
 
-    ListViewAdapter(Context context, List<New> news) {
-        super(context, 0, news);
+    ListViewAdapter(Context context, List<BrisbaneNew> brisbaneNews) {
+        super(context, 0, brisbaneNews);
         this.context = context;
-        this.news = news;
+        this.brisbaneNews = brisbaneNews;
     }
 
     /**
-     * @param position used to fetch data from news list
+     * @param position used to fetch data from brisbaneNews list
      * @return rows to populate list view
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View listItemView = convertView;
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_row, parent, false);
         }
-        New mNew = news.get(position);
+        BrisbaneNew brisbaneNew = brisbaneNews.get(position);
 
-        TextView titleTextView = listItemView.findViewById(R.id.title_text_view);
-        TextView authorTextView = listItemView.findViewById(R.id.author_text_view);
-        TextView dateTextView = listItemView.findViewById(R.id.date_text_view);
+        TextView titleTextView = convertView.findViewById(R.id.title_text_view);
+        TextView sectionNameTextView = convertView.findViewById(R.id.section_new_text_view);
+        TextView authorTextView = convertView.findViewById(R.id.author_text_view);
+        TextView dateTextView = convertView.findViewById(R.id.date_text_view);
 
-        titleTextView.setText(mNew.getWebTitle());
-        authorTextView.setText(context.getText(R.string.author) + mNew.getAuthor());
-        dateTextView.setText(mNew.getWebPublicationDate());
+        titleTextView.setText(brisbaneNew.getWebTitle());
+        sectionNameTextView.setText(brisbaneNew.getSectionName());
+        authorTextView.setText(context.getText(R.string.author) + brisbaneNew.getAuthor());
+        dateTextView.setText(brisbaneNew.getWebPublicationDate());
 
-        return listItemView;
+        return convertView;
     }
 }
