@@ -4,7 +4,7 @@
     <string name="no_news_found">There are no news about Brisbane</string>
     <string name="author">Author:\ </string>
     <string name="util_exception_instantiation">Utils class can not be instantiated</string>
-    <string name="settings_title">Brisbane news settings</string>
+    <string name="settings_title">Brisbane News Settings</string>
 
     <string name="order_by_key_default">@string/settings_order_by_newest_value</string>
     <string name="settings_order_by_newest_label">Newest</string>
@@ -15,7 +15,7 @@
     <string name="settings_order_by_key" translatable="false">order_by</string>
 
     <string name="settings_items_quantity_default">10</string>
-    <string name="settings_items_quantity_label">Amount of items of news</string>
+    <string name="settings_items_quantity_label">Amount Of Items Of News</string>
     <string name="settings_items_quantity_key" translatable="false">amount_of_items_of_news</string>
 
     <string name="settings_menu_item">Settings</string>
