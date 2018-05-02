@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,19 +21,19 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
 
-//            Preference minMagnitude = findPreference(getString(R.string.settings_min_magnitude_key));
-//            bindPreferenceSummaryToValue(minMagnitude);
+            Preference amountOfItemsOfNews = findPreference(getString(R.string.settings_items_quantity_key));
+            bindPreferenceSummaryToValue(amountOfItemsOfNews);
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
         }
 
         @Override
-        public boolean onPreferenceChange (Preference preference, Object newValue) {
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
             String stringValue = newValue.toString();
 
             if (preference instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference)preference;
+                ListPreference listPreference = (ListPreference) preference;
                 int prefIndex = listPreference.findIndexOfValue(stringValue);
                 if (prefIndex >= 0) {
                     CharSequence[] labels = listPreference.getEntries();
@@ -43,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
             } else {
                 preference.setSummary(stringValue);
             }
-            return false;
+            return true;
         }
 
         private void bindPreferenceSummaryToValue(Preference preference) {

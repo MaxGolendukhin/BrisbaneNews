@@ -6,20 +6,17 @@
     <string name="util_exception_instantiation">Utils class can not be instantiated</string>
     <string name="settings_title">Brisbane news settings</string>
 
-    <string name="settings_order_by_newest">newest</string>
-
+    <string name="order_by_key_default">@string/settings_order_by_newest_value</string>
     <string name="settings_order_by_newest_label">Newest</string>
     <string name="settings_order_by_newest_value" translatable="false">newest</string>
-
     <string name="settings_order_by_oldest_label">Oldest</string>
     <string name="settings_order_by_oldest_value" translatable="false">oldest</string>
-
-    <string name="settings_order_by_relevance_label">Relevance</string>
-    <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
-
     <string name="settings_order_by_label">Order By</string>
     <string name="settings_order_by_key" translatable="false">order_by</string>
 
-    <string name="settings_menu_item">Settings</string>
+    <string name="settings_items_quantity_default">10</string>
+    <string name="settings_items_quantity_label">Amount of items of news</string>
+    <string name="settings_items_quantity_key" translatable="false">amount_of_items_of_news</string>
 
+    <string name="settings_menu_item">Settings</string>
 </resources>

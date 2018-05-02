@@ -4,10 +4,12 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<BrisbaneNew>> {
-    private static final String GUARDIAN_REQUEST_UR1 =
-            "http://content.guardianapis.com/search?order-by=newest&" +
-                    "show-tags=contributor&from-date=2018-01-01&use-date=published&page-size=30&" +
-                    "q=Brisbane&api-key=test";
-
     private static final String GUARDIAN_REQUEST_URL =
-            "http://content.guardianapis.com/search?q=Brisbane&show-tags=contributor&use-date=published&page-size=30&";
-
+            "http://content.guardianapis.com/search?q=Brisbane&show-tags=contributor&use-date=published&";
+    private  static final String ORDER_BY_QUERY_KEY = "order-by";
+    private  static final String PAGE_SIZE_QUERY_KEY = "page-size";
+    private  static final String FROM_DATE_QUERY_KEY = "from-date";
+    private  static final String API_KEY_QUERY_KEY = "api-key";
     private static final int NEW_LOADER_ID = 0;
 
     private TextView emptyStateTextView;
@@ -91,12 +91,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     @Override
     public Loader<List<BrisbaneNew>> onCreateLoader(int i, Bundle bundle) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String orderBy = sharedPreferences.getString(getString(R.string.settings_order_by_key),
+                getString(R.string.order_by_key_default));
+        String pageSize = sharedPreferences.getString(getString(R.string.settings_items_quantity_key),
+                getString(R.string.settings_items_quantity_default));
+
         Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-
-        uriBuilder.appendQueryParameter("order-by", "newest");
-        uriBuilder.appendQueryParameter("from-date", "2018-01-01");
-        uriBuilder.appendQueryParameter("api-key", "test");
+        uriBuilder.appendQueryParameter(ORDER_BY_QUERY_KEY, orderBy);
+        uriBuilder.appendQueryParameter(PAGE_SIZE_QUERY_KEY, pageSize);
+        uriBuilder.appendQueryParameter(FROM_DATE_QUERY_KEY, "2018-01-01");
+        uriBuilder.appendQueryParameter(API_KEY_QUERY_KEY, "test");
 
         return new NewsLoader(this, uriBuilder.toString());
     }
@@ -129,14 +135,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listViewAdapter.clear();
     }
 
+    /**
+     * This method initialize the contents of the Activity's options menu.
+     */
     @Override
-    // This method initialize the contents of the Activity's options menu.
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the Options Menu we specified in XML
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    /**
+     * Triggered when any menu option is pressed
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
